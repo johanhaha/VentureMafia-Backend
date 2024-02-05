@@ -2,9 +2,14 @@ import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
 
-import { AlumniNetwork, RelationType, OrgCountryCode } from './interfaces';
+import { Organisation, Person, SubsequentOrgsInfo, AlumniNetwork } from './interfaces';
+import { OrgRegion, OrgCity, RelationType, OrgCountryCode } from './interfaces';
 
 import alumniNetworkRaw from './data/alumni_network.json';
+
+import targetOrg from './data/targetOrg.json';
+import alumniInfo from './data/alumniInfo.json';
+import subsequentOrgsInfo from './data/subsequentOrgsInfo.json';
 
 // Function to get data for a target organisation
 function getData(target_org: string): AlumniNetwork[] {
@@ -14,19 +19,43 @@ function getData(target_org: string): AlumniNetwork[] {
   return alumniNetworkRaw.map(entry => ({
     ...entry,
     relationType: RelationType[entry.relationType as keyof typeof RelationType],
-    orgCountryCode: OrgCountryCode[entry.orgCountryCode as keyof typeof OrgCountryCode],
-    foundedOn: entry.foundedOn.toString(), // Convert foundedOn to string if necessary
+    orgCountryCode: Object.values(OrgCountryCode).find((type) => type === entry.orgCountryCode) as OrgCountryCode,
+    foundedOn: entry.foundedOn.toString(),
   }));
 }
 
-const alumniNetwork = getData('PayPal');
+function getTargetOrg(targetOrgName: string): Organisation[] {
+  console.log(targetOrgName)
+  return targetOrg.map(entry => ({
+    ...entry,
+    orgCountryCode: Object.values(OrgCountryCode).find((type) => type === entry.orgCountryCode) as OrgCountryCode,
+    orgRegion: Object.values(OrgRegion).find((type) => type === entry.orgRegion) as OrgRegion,
+    orgCity: Object.values(OrgCity).find((type) => type === entry.orgCity) as OrgCity,
+    foundedOn: entry.foundedOn.toString(),
+  }));
+}
 
-var filtered = alumniNetwork.filter((entry) => entry.personName == 'Elon Musk').map(entry => entry.jobTitle);
+function getAlumniInfo(targetOrgName: string): Person[] {
+  console.log(targetOrgName)
+  return alumniInfo.map(entry => ({
+    ...entry,
+    jobType: Object.values(RelationType).find((type) => type === entry.jobType) as RelationType,
+    startedOn: entry.startedOn.toString(),
+    endedOn: entry.endedOn?.toString() ?? "NaT",
+  }));
+}
 
-console.log(filtered);
+function getSubsequentOrgsInfo(targetOrgName: string): SubsequentOrgsInfo[] {
+  console.log(targetOrgName)
+  return subsequentOrgsInfo.map(entry => ({
+    ...entry,
+    relationType: Object.values(RelationType).find((type) => type === entry.relationType) as RelationType,
+    orgCountryCode: Object.values(OrgCountryCode).find((type) => type === entry.orgCountryCode) as OrgCountryCode,
+    foundedOn: entry.foundedOn?.toString() ?? "NaT",
+  }));
+}
 
-
-
+console.log(getSubsequentOrgsInfo('PayPal'));
 
 function App() {
   return (
