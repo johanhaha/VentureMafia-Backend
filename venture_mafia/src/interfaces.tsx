@@ -33,6 +33,14 @@ enum CategoryList {
   // Add more categories as needed
 } */
 
+// ------------------------------ types ------------------------------
+
+export type NetworkDiagramProps = {
+  width: number;
+  height: number;
+  data: number[];
+};
+
 // ------------------------------ interfaces ------------------------------
 
 // Organisation includes all information about a particular organisation
