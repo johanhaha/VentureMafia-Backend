@@ -163,3 +163,4 @@ cython_debug/
 *.DS_Store
 */data/*
 ./venture_mafiaTSX/*
+*/src/data/*
