@@ -164,3 +164,4 @@ cython_debug/
 */data/*
 ./venture_mafiaTSX/*
 */src/data/*
+*/public/data/*
