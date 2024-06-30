@@ -5,12 +5,13 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "start:dev": "nodemon app.js"
+    "dev": "nodemon app.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "node-fetch": "^3.3.2"
+    "node-fetch": "^3.3.2",
+    "pg": "^8.12.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
