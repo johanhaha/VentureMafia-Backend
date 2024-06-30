@@ -47,8 +47,7 @@ const relationsColumnMapping = {
     'person_uuid': 'personUuid',
     'org_uuid_subsequent': 'orgUuid',
     'relation_type': 'relationType',
-    'job_title_subsequent': 'jobTitleSubsequent',
-    'org_logo_url_subsequent': 'orgLogoUrl'
+    'job_title_subsequent': 'jobTitleSubsequent'
 };
 
 module.exports = {
