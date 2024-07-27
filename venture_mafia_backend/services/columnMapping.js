@@ -1,3 +1,8 @@
+const availableOrgsColumnMapping = {
+    'org_uuid': 'value',
+    'org_name': 'label',
+};
+
 const targetOrgInfoColumnMapping = {
     'org_uuid': 'orgUuid',
     'org_name': 'orgName',
@@ -51,6 +56,7 @@ const relationsColumnMapping = {
 };
 
 module.exports = {
+    availableOrgsColumnMapping,
     targetOrgInfoColumnMapping,
     alumniInfoColumnMapping,
     subsequentOrgsInfoColumnMapping,
