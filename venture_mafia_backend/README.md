@@ -251,6 +251,13 @@ CREATE TABLE orgs_info (
     exit_valuation BIGINT
 );
 
+CREATE TABLE available_orgs (
+    org_uuid UUID PRIMARY KEY,
+    org_name VARCHAR(255)
+);
+
+\COPY available_orgs FROM './available_orgs.csv' DELIMITER ',' CSV HEADER;
+
 \COPY orgs_info FROM './targetOrgs_full.csv' DELIMITER ',' CSV HEADER;
 
 \COPY alumni_master FROM './alumni_master_full.csv' DELIMITER ',' CSV HEADER;
@@ -258,8 +265,8 @@ CREATE TABLE orgs_info (
 CREATE USER venture_mafia_api PASSWORD 'aPiPAss221'
 ```
 
-To clean database:
+Clean database: `TRUNCATE TABLE orgs_info CASCADE;`
 
-```SQL
-TRUNCATE TABLE orgs_info CASCADE;
-```
+Remove record: `DELETE FROM available_orgs WHERE org_uuid = '{org_uuid}';`
+
+Add record: `INSERT INTO available_orgs (org_uuid, org_name) VALUES ('{org_uuid}', '{org_name}');`
