@@ -10,11 +10,11 @@ types.setTypeParser(1114, (val) => new Date(val)); // For timestamp without time
 types.setTypeParser(2950, (val) => val); // For uuid (leave as string)
 
 const client = new Client({
-  host: "localhost",
-  port: 5432,
-  user: "venture_mafia_api",
-  password: "aPiPAss221",
-  database: "venture_mafia",
+  host: process.env.DB_HOST || "localhost",
+  port: process.env.DB_PORT || 5432,
+  user: process.env.DB_USER || "venture_mafia_api",
+  password: process.env.DB_PASSWORD || "aPiPAss221",
+  database: process.env.DB_NAME || "venture_mafia",
 });
 
 client.connect();
