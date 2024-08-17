@@ -6,12 +6,19 @@ name: Deploy to Firebase Hosting on merge
   push:
     branches:
       - main
+env:
+  ENVFILE: ".env.production"
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: cd venture_mafia && npm ci && npm run build
+      - name: Install dependencies
+        run: cd venture_mafia && npm ci
+      - name: Build
+        run: |-
+          cp ${{ env.ENVFILE }} .env
+          npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
