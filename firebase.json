@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "build",
+    "public": "venture_mafia/build",
     "ignore": [
       "firebase.json",
       "**/.*",
