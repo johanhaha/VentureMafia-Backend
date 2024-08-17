@@ -4,7 +4,7 @@
 name: Deploy to Firebase Hosting on PR
 "on": pull_request
 env:
-  ENVFILE: "venture_mafia/.env.production"
+  ENVFILE: ".env.production"
 jobs:
   build_and_preview:
     if: "${{ github.event.pull_request.head.repo.full_name == github.repository }}"
@@ -15,7 +15,7 @@ jobs:
         run: cd venture_mafia && npm ci
       - name: Build
         run: |-
-          cp ${{ env.ENVFILE }} venture_mafia/.env
+          cp ${{ env.ENVFILE }} .env
           npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
