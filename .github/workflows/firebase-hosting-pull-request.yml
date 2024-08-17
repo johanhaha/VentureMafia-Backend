@@ -15,6 +15,7 @@ jobs:
         run: cd venture_mafia && npm ci
       - name: Build
         run: |-
+          cd venture_mafia
           cp ${{ env.ENVFILE }} .env
           npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
