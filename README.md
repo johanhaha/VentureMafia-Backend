@@ -198,6 +198,10 @@ module.exports = {
 
 # Database Setup
 
+Start local database:
+
+`psql -U  johan.torssell -d venture_mafia`
+
 ```SQL
 CREATE TABLE alumni_master (
     record_uuid UUID PRIMARY KEY,
