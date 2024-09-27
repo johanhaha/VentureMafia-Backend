@@ -276,3 +276,64 @@ Remove record: `DELETE FROM available_orgs WHERE org_uuid = '{org_uuid}';`
 Add record: `INSERT INTO available_orgs (org_uuid, org_name) VALUES ('{org_uuid}', '{org_name}');`
 
 Add person to existing organisation (one experience at a time): `insert into alumni_master (record_uuid,person_uuid,org_uuid_target,started_on_target,ended_on_target,job_title_target,job_type_target,org_name_target,org_country_code_target,org_city_target,founded_on_target,person_name,person_logo_url,org_uuid_subsequent,started_on_subsequent,ended_on_subsequent,job_title_subsequent,relation_type,org_name_subsequent,org_country_code_subsequent,org_city_subsequent,founded_on_subsequent,short_description_subsequent,total_funding_usd_subsequent,org_logo_url_subsequent,acquirer_uuid_subsequent,exit_type_subsequent,acquirer_name_subsequent,exit_date_subsequent,acquisition_type_subsequent,exit_valuation_subsequent) values ('{record_uuid}','{person_uuid}','{org_uuid_target}','{started_on_target}','{ended_on_target}','{job_title_target}','{job_type_target}','{org_name_target}','{org_country_code_target}','{org_city_target}','{founded_on_target}','{person_name}','{person_logo_url}','{org_uuid_subsequent}','{started_on_subsequent}',{ended_on_subsequent},'{job_title_subsequent}','{relation_type}','{org_name_subsequent}','{org_country_code_subsequent}','{org_city_subsequent}','{founded_on_subsequent}','{short_description_subsequent}',{total_funding_usd_subsequent},'{org_logo_url_subsequent}','{acquirer_uuid_subsequent}',{exit_type_subsequent},'{acquirer_name_subsequent}',{exit_date_subsequent},{acquisition_type_subsequent},{exit_valuation_subsequent})`
+
+# Database Analytics
+
+
+```SQL
+-- Unique persons
+SELECT COUNT(DISTINCT person_name) AS unique_person_count
+FROM alumni_master
+WHERE org_name_target = 'iZettle';
+
+-- Unique subsequent companies
+SELECT COUNT(DISTINCT org_name_subsequent) AS unique_org_count
+FROM alumni_master
+WHERE org_name_target = 'iZettle';
+
+-- Total funding subsequent companies
+SELECT SUM(total_funding_usd_subsequent) AS total_funding_sum
+FROM (
+    SELECT DISTINCT org_uuid_subsequent, total_funding_usd_subsequent
+    FROM alumni_master
+    WHERE org_name_target = 'iZettle'
+) AS unique_orgs;
+
+-- Most well funded subsequent companies
+SELECT DISTINCT(org_name_subsequent), total_funding_usd_subsequent
+FROM alumni_master
+WHERE org_name_target = 'iZettle' AND total_funding_usd_subsequent IS NOT NULL
+ORDER BY total_funding_usd_subsequent DESC
+LIMIT 10;
+
+-- Exit types subsequent companies
+SELECT exit_type_subsequent, COUNT(*) AS exit_type_count
+FROM (
+    SELECT DISTINCT org_uuid_subsequent, exit_type_subsequent
+    FROM alumni_master
+    WHERE org_name_target = 'iZettle'
+) AS unique_orgs
+GROUP BY exit_type_subsequent;
+
+-- Total exit value subsequent companies
+SELECT SUM(exit_valuation_subsequent) AS total_exit_sum
+FROM (
+    SELECT DISTINCT org_uuid_subsequent, exit_valuation_subsequent
+    FROM alumni_master
+    WHERE org_name_target = 'iZettle'
+) AS unique_orgs;
+
+-- Subsequent engagement count
+SELECT 
+    person_name, 
+    COUNT(DISTINCT org_uuid_subsequent) AS subsequent_engagement_count,
+    COUNT(DISTINCT CASE WHEN relation_type = 'executive' THEN org_uuid_subsequent END) AS executive_engagement_count,
+    COUNT(DISTINCT CASE WHEN relation_type = 'investor' THEN org_uuid_subsequent END) AS investor_engagement_count,
+    COUNT(DISTINCT CASE WHEN relation_type = 'board_member' THEN org_uuid_subsequent END) AS board_member_engagement_count,
+    COUNT(DISTINCT CASE WHEN relation_type = 'advisor' THEN org_uuid_subsequent END) AS advisor_engagement_count
+FROM alumni_master
+WHERE org_name_target = 'iZettle'
+GROUP BY person_name
+ORDER BY subsequent_engagement_count DESC;
+
+```
