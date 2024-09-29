@@ -336,4 +336,11 @@ WHERE org_name_target = 'iZettle'
 GROUP BY person_name
 ORDER BY subsequent_engagement_count DESC;
 
+-- Companies with most alumni connected
+SELECT org_name_subsequent, COUNT(DISTINCT person_uuid) AS alumni_count
+FROM alumni_master
+WHERE org_name_target = 'iZettle'
+GROUP BY org_name_subsequent
+ORDER BY alumni_count DESC
+LIMIT 10;
 ```
