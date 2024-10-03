@@ -323,6 +323,15 @@ FROM (
     WHERE org_name_target = 'iZettle'
 ) AS unique_orgs;
 
+-- Largest exits subsequent companies
+SELECT org_name_subsequent, exit_type_subsequent, exit_valuation_subsequent, exit_date_subsequent, acquirer_name_subsequent
+FROM (
+    SELECT DISTINCT org_name_subsequent, exit_type_subsequent, exit_valuation_subsequent, exit_date_subsequent, acquirer_name_subsequent
+    FROM alumni_master
+    WHERE org_name_target = 'Netscape' AND exit_valuation_subsequent IS NOT NULL
+) AS unique_orgs
+ORDER BY exit_valuation_subsequent DESC;
+
 -- Subsequent engagement count
 SELECT 
     person_name, 
