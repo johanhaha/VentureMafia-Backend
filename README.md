@@ -352,4 +352,16 @@ WHERE org_name_target = 'iZettle'
 GROUP BY org_name_subsequent
 ORDER BY alumni_count DESC
 LIMIT 10;
+
+-- Most recently founded subsequent companies
+SELECT org_name_subsequent, founded_on_subsequent
+FROM (
+    SELECT DISTINCT org_name_subsequent, founded_on_subsequent
+    FROM alumni_master
+    WHERE org_name_target = 'iZettle'
+    AND relation_type = 'executive'
+    AND founded_on_subsequent IS NOT NULL
+) AS unique_orgs
+ORDER BY founded_on_subsequent DESC
+LIMIT 10;
 ```
